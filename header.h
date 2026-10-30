@@ -18,13 +18,13 @@ typedef	enum	e_scheduler
 
 typedef	struct	s_simulation
 {
-	int		number_of_coders;
-	long long 	time_to_burnout;
-	long long	time_to_compile;
-	long long	time_to_debug;
-	long long	time_to_refactor;
-	int		numbers_of_compiles_required;
-	long long	dongle_cooldown;
+	int	number_of_coders;
+	int 	time_to_burnout;
+	int	time_to_compile;
+	int	time_to_debug;
+	int	time_to_refactor;
+	int	numbers_of_compiles_required;
+	int	dongle_cooldown;
 	t_scheduler	scheduler;
 
 	long long	start_time;
@@ -49,8 +49,8 @@ typedef	struct	s_simulation
 typedef struct		s_request
 {
 	int		coder;
-	long long	priority;
-	long long	sequence;
+	int		priority;
+	int		sequence;
 }			t_request;
 
 typedef struct		s_heap

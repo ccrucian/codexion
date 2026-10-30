@@ -44,7 +44,8 @@ int	is_valid_number(char **argv)
 
 void	convert_and_init_simulation(char **argv, t_simulation *sim)
 {
-	
+		sim->number_of_coders = atoi(argv[1]);
+		sim->time_toburno
 }
 
 int	main(int argc, char **argv)
