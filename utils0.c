@@ -74,6 +74,7 @@ void	enqueue_request(t_simulation *sim, t_coder *coder)
 	t_request	req;
 
 	pthread_mutex_lock(&sim->heap_mutex);
+
 	req.coder_id = coder->id;
 	req.sequence = sim->next_sequence;
 	sim->next_sequence++;

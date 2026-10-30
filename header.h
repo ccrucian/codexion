@@ -1,9 +1,14 @@
-# ifndef FT_CODEXION
+#ifndef FT_CODEXION
 # define FT_CODEXION
 
-#include<limits.h>
-#include<stdlib.h>
-#include<pthreads.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <pthreads.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdeff.h>
+
+# define FD_STDERR	2
 
 typedef	enum	e_scheduler
 {
@@ -13,12 +18,12 @@ typedef	enum	e_scheduler
 
 typedef	struct	s_simulation
 {
-	int		n_coders;
+	int		number_of_coders;
 	long long 	time_to_burnout;
 	long long	time_to_compile;
 	long long	time_to_debug;
 	long long	time_to_refactor;
-	int		n_compiles_required;
+	int		numbers_of_compiles_required;
 	long long	dongle_cooldown;
 	t_scheduler	scheduler;
 
@@ -32,6 +37,8 @@ typedef	struct	s_simulation
 	pthread_mutex_t	heap_mutext;
 	pthread_mutex_t	print_mutext;
 	pthread_mutex_t	state_mutext;
+
+	pthread_cond_t	condition; //dongle_available
 
 	pthread_t	monitor;
 	struct s_coder	*coders;
@@ -59,6 +66,7 @@ typedef struct		s_coder
 	pthread_t	thread;
 	long long	last_compile_start;
 	int		compile_count;
+	int		have_two_dongles;
 }			t_coder;
 
 void	swap(int *a, int *b);
