@@ -42,6 +42,15 @@ void	convert_and_init_simulation(char **argv, t_simulation *sim)
 		sim->scheduler = FIFO;
 }
 
+void	*routine(void *arg)
+{
+    t_coder *coder;
+
+    coder = (t_coder *)arg;
+	printf("Coder %d is coding\n", coder->id);
+    return (NULL);
+}
+
 void	create_coders_threads(t_coder *coders, t_simulation *sim)
 {
 	int n;
@@ -51,19 +60,16 @@ void	create_coders_threads(t_coder *coders, t_simulation *sim)
 	i = 0;
 	while (i < n)
 	{
-		pthread_create(coders[i], NULL, &routine, NULL);
+        coders[i].id = i + 1;
+		pthread_create(&coders[i].thread, NULL, &routine, &coders[i]);
+        i++;
 	}
-}
-
-void	*routine()
-{
-	printf("coding");
 }
 
 int	main(int argc, char **argv)
 {
 	t_simulation	sim;
-	t_coder coders[argv[1]];
+	t_coder coders[atoi(argv[1])];
 	struct timeval current;
 	struct timeval start;
 	long t;
@@ -71,10 +77,10 @@ int	main(int argc, char **argv)
 	if (argc != 9)
 		return (0);
 	if ((!is_valid_number(argv + 1)) ||
-			(strcmp(argv[8], "edf") && strcmp(argv[8], "fifo")))
+		    (strcmp(argv[8], "edf") && strcmp(argv[8], "fifo")))
 		return (0);
 	convert_and_init_simulation(argv, &sim);
-	create_coders_threads(&coders, &sim)
+	create_coders_threads(coders, &sim);
 	gettimeofday(&start, NULL);
 	usleep(200);
 	gettimeofday(&current, NULL);
