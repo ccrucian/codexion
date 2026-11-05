@@ -62,13 +62,7 @@ int	main(int argc, char **argv)
 		return (0);
 	if ((!is_valid_number(argv + 1)) ||
 			(ft_strcmp(argv[8], "edf") && ft_strcmp(argv[8], "fifo")))
-	{
-		printf("IN");
 		return (0);
-	}
 	convert_and_init_simulation(argv, &sim);
-	printf("ok00");
-	printf("%d\n", sim.number_of_coders);
-	printf("%d\n", sim.scheduler);
 	return (0);
 }
