@@ -41,16 +41,35 @@ void	convert_and_init_simulation(char **argv, t_simulation *sim)
 	else
 		sim->scheduler = FIFO;
 }
+/*
+void	create_coders_threads(t_coder *coders, t_simulation *sim)
+{
+	while ()
+}
+
+void	*routine()
+{
+	printf("coding");
+}*/
 
 int	main(int argc, char **argv)
 {
 	t_simulation	sim;
+/*	t_coder coders[argv[1]];*/
+	struct timeval current;
+	struct timeval start;
+	long t;
 
-	if (argc!= 9)
+	if (argc != 9)
 		return (0);
 	if ((!is_valid_number(argv + 1)) ||
 			(strcmp(argv[8], "edf") && strcmp(argv[8], "fifo")))
 		return (0);
 	convert_and_init_simulation(argv, &sim);
+	gettimeofday(&start, NULL);
+	sleep(2);
+	gettimeofday(&current, NULL);
+	t = current.tv_sec - start.tv_sec;
+	printf("%ld\n", t);
 	return (0);
 }
