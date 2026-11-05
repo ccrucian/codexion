@@ -92,7 +92,7 @@ t_request	pop_root(t_heap *heap)
 	heap->size--;
 	if (heap->size > 0)
 	{
-		heap->data[0] = heap->data[heap->size]:
+		heap->data[0] = heap->data[heap->size];
 		heapify_down(heap, 0);
 	}
 	return root;
