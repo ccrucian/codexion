@@ -41,21 +41,29 @@ void	convert_and_init_simulation(char **argv, t_simulation *sim)
 	else
 		sim->scheduler = FIFO;
 }
-/*
+
 void	create_coders_threads(t_coder *coders, t_simulation *sim)
 {
-	while ()
+	int n;
+	int i;
+
+	n = sim->number_of_coders;
+	i = 0;
+	while (i < n)
+	{
+		pthread_create(coders[i], NULL, &routine, NULL);
+	}
 }
 
 void	*routine()
 {
 	printf("coding");
-}*/
+}
 
 int	main(int argc, char **argv)
 {
 	t_simulation	sim;
-/*	t_coder coders[argv[1]];*/
+	t_coder coders[argv[1]];
 	struct timeval current;
 	struct timeval start;
 	long t;
@@ -66,10 +74,11 @@ int	main(int argc, char **argv)
 			(strcmp(argv[8], "edf") && strcmp(argv[8], "fifo")))
 		return (0);
 	convert_and_init_simulation(argv, &sim);
+	create_coders_threads(&coders, &sim)
 	gettimeofday(&start, NULL);
-	sleep(2);
+	usleep(200);
 	gettimeofday(&current, NULL);
-	t = current.tv_sec - start.tv_sec;
+	t = (current.tv_sec - start.tv_sec) * 1000;
 	printf("%ld\n", t);
 	return (0);
 }
