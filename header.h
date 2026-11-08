@@ -20,10 +20,10 @@ typedef	enum	e_scheduler
 
 typedef struct		s_request
 {
-	int		coder;
-	int		priority;
-	int		sequence;
-}			t_request;
+	int			coder;
+	long long	priority;
+	int			sequence;
+}					t_request;
 
 typedef struct		s_heap
 {
@@ -34,11 +34,12 @@ typedef struct		s_heap
 
 typedef struct		s_coder
 {
-	int		id;
-	pthread_t	thread;
-	long long	last_compile_start;
-	int		compile_count;
-	int		have_two_dongles;
+	int					id;
+	pthread_t			thread;
+	struct s_simulation	*sim;
+	long long			last_compile_start;
+	int					compile_count;
+	int					have_two_dongles;
 }					t_coder;
 
 
@@ -83,7 +84,9 @@ void	deletekey(t_heap *heap, int index);
 
 int	parse_args(int argc, char **argv, t_simulation *sim);
 int	parse_int(char *str, int *result);
-void	create_coders_threads(t_coder *coders, t_simulation *sim);
+int	create_coders_threads(t_coder *coders, t_simulation *sim);
+void    init_coder_fields(t_coder *coders, t_simulation *sim);
+void	init_simulation_state(t_simulation *sim);
 int	convert_and_init_simulation(char **argv, t_simulation *sim);
 long long    get_time_in_ms(void);
 

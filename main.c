@@ -8,6 +8,22 @@ int	init_coders(int number, t_coder **coders)
 	return 1;
 }
 
+void    init_coder_fields(t_coder *coders, t_simulation *sim)
+{
+    int i;
+
+    i = 0;
+    while (i < sim->number_of_coders)
+    {
+        coders[i].id = i + 1;
+        coders[i].sim = sim;
+        coders[i].last_compile_start = sim->start_time;
+        coders[i].compile_count = 0;
+        coders[i].have_two_dongles = 0;
+        i++;
+    }
+}
+
 void	join_coders(t_coder *coders, int number_of_coders)
 {
 	int	i;
@@ -23,25 +39,31 @@ void	join_coders(t_coder *coders, int number_of_coders)
 void	*routine(void *arg)
 {
     t_coder *coder;
+	long long	elapsed;
 
+	usleep(2000);
     coder = (t_coder *)arg;
-	printf("Coder %d is coding\n", coder->id);
+	elapsed = get_time_in_ms() - coder->sim->start_time;
+	printf("%lld coder %d is coding\n", elapsed, coder->id);
     return (NULL);
 }
 
-void	create_coders_threads(t_coder *coders, t_simulation *sim)
+int	create_coders_threads(t_coder *coders, t_simulation *sim)
 {
-	int n;
 	int i;
 
-	n = sim->number_of_coders;
 	i = 0;
-	while (i < n)
+	while (i < sim->number_of_coders)
 	{
-        coders[i].id = i + 1;
-		pthread_create(&coders[i].thread, NULL, &routine, &coders[i]);
+		if (pthread_create(&coders[i].thread, NULL,
+			 &routine, &coders[i]))
+		{
+			join_coders(coders, i);
+			return (1);
+		}
         i++;
 	}
+	return (0);
 }
 
 /* Convert seconds and microseconds in ms */
@@ -70,7 +92,6 @@ int	main(int argc, char **argv)
 {
 	t_simulation	sim;
 	t_coder *coders;
-	long t;
 
 	coders = NULL;
 	if (argc != 9)
@@ -80,16 +101,11 @@ int	main(int argc, char **argv)
 	if (!init_coders(sim.number_of_coders, &coders))
 		return (1);
 	if (start_simulation_time(&sim))
-		return (free(coders), 0);
-	create_coders_threads(coders, &sim);
+		return (free(coders), 1);
+	init_coder_fields(coders, &sim);
+	if (create_coders_threads(coders, &sim))
+		return (free(coders), 1);
 	join_coders(coders, sim.number_of_coders);
 	free(coders);
-
-	t = get_time_in_ms() - sim.start_time;
-	printf("%ld\n", t);
-	sleep(2);
-	t = get_time_in_ms() - sim.start_time;
-	printf("%ld\n", t);
-
 	return (0);
 }

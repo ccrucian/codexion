@@ -24,6 +24,17 @@ int	parse_int(char *str, int *result)
 	return (1);
 }
 
+void	init_simulation_state(t_simulation *sim)
+{
+	sim->next_sequence = 0;
+	sim->stopped = 0;
+	sim->heap.data = NULL;
+	sim->heap.size = 0;
+	sim->heap.capacity = 0;
+	sim->coders = NULL;
+	sim->dongle = NULL;
+}
+
 int	parse_args(int argc, char **argv, t_simulation *sim)
 {
 	if (argc != 9)
@@ -45,5 +56,6 @@ int	parse_args(int argc, char **argv, t_simulation *sim)
 		sim->scheduler = FIFO;
 	else
 		return (0);
+	init_simulation_state(sim);
 	return (1);
 }
