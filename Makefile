@@ -4,16 +4,17 @@ CFLAGS = -Werror -Wall -Wextra -pthread
 
 NAME = codexion
 
-OBJ = main.o
+SRCS = main.c parser.c
+OBJ = $(SRCS:.c=.o)
 
 HEADER = header.h
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-%.o: $.c $(HEADER)
+%.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

@@ -39,13 +39,13 @@ typedef struct		s_coder
 	long long	last_compile_start;
 	int		compile_count;
 	int		have_two_dongles;
-}			t_coder;
+}					t_coder;
 
 
 typedef	struct	s_simulation
 {
 	int	number_of_coders;
-	int 	time_to_burnout;
+	int time_to_burnout;
 	int	time_to_compile;
 	int	time_to_debug;
 	int	time_to_refactor;
@@ -80,5 +80,11 @@ void	increasekey(t_heap *heap, int index, int new_value);
 void	insertHeap(t_heap *heap, int value);
 int	extract_root(t_heap *heap);
 void	deletekey(t_heap *heap, int index);
+
+int	parse_args(int argc, char **argv, t_simulation *sim);
+int	parse_int(char *str, int *result);
+void	create_coders_threads(t_coder *coders, t_simulation *sim);
+int	convert_and_init_simulation(char **argv, t_simulation *sim);
+long long    get_time_in_ms(void);
 
 # endif
